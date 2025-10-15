@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screening Tool for Geriatric Depression</title>
+    <style>
+        :root {
+            --primary-teal: #00897b;
+            --secondary-teal: #e0f2f1;
+            --primary-indigo: #3949ab;
+            --secondary-indigo: #e8eaf6;
+            --text-dark: #263238;
+            --text-medium: #455a64;
+            --text-light: #607d8b;
+            --white: #ffffff;
+            --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--secondary-indigo), var(--secondary-teal));
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: 10px;
+            min-height: 100vh;
+            font-size: 10px;
+        }
+
+        h1 {
+            color: var(--primary-indigo);
+            text-align: center;
+            margin: 10px 0 15px;
+            font-weight: 600;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--primary-teal);
+            font-size: 1rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 5px 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 10px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 1.5px rgba(0, 137, 123, 0.1);
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 0;
+            font-size: 9px;
+        }
+
+        .radio-option input {
+            accent-color: var(--primary-indigo);
+            width: 9px;
+            height: 9px;
+        }
+
+        .button {
+            background: var(--primary-teal);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+            display: block;
+            margin: 12px auto 6px;
+            width: 110px;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #00695c;
+            transform: translateY(-0.5px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .result {
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 10px;
+            font-weight: 500;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .high-risk {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 0.5px solid #ef9a9a;
+        }
+
+        .low-risk {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 0.5px solid #a5d6a7;
+        }
+
+        .input-hint {
+            font-size: 8px;
+            color: var(--text-light);
+            margin-top: 2px;
+            font-style: italic;
+        }
+
+
+        .two-columns, .three-columns, .three-in-row {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .three-columns {
+            grid-template-columns: repeat(2, 1fr); 
+        }
+
+        .three-in-row {
+            grid-template-columns: repeat(3, 1fr); 
+        }
+
+        .two-columns {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+
+        @media (max-width: 640px) {
+            .three-in-row {
+                grid-template-columns: 1fr 1fr; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .two-columns,
+            .three-columns,
+            .three-in-row {
+                grid-template-columns: 1fr; 
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 0.9rem;
+                margin: 8px 0 12px;
+            }
+        }
+
+
+        .option-group {
+            background-color: rgba(232, 234, 246, 0.5);
+            padding: 6px;
+            border-radius: 4px;
+            border-left: 1.5px solid var(--primary-indigo);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Screening Tool for Geriatric Depression</h1>
+        <form action="/calculate" method="post">
+            <div class="three-columns">
+                <div class="form-group option-group">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="gender-male" name="gender" value="male" checked>
+                            <label for="gender-male">Male</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="gender-female" name="gender" value="female">
+                            <label for="gender-female">Female</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Alcohol Abuse</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="alcohol-yes" name="alcohol" value="yes">
+                            <label for="alcohol-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="alcohol-no" name="alcohol" value="no" checked>
+                            <label for="alcohol-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Hypertension</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="hypertension-yes" name="hypertension" value="yes">
+                            <label for="hypertension-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="hypertension-no" name="hypertension" value="no" checked>
+                            <label for="hypertension-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Diabetes</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="diabetes-yes" name="diabetes" value="yes">
+                            <label for="diabetes-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="diabetes-no" name="diabetes" value="no" checked>
+                            <label for="diabetes-no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="three-columns">
+                <div class="form-group option-group">
+                    <label>Asthma</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="asthma-yes" name="asthma" value="yes">
+                            <label for="asthma-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="asthma-no" name="asthma" value="no" checked>
+                            <label for="asthma-no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Sleep Disorders</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="sleep-yes" name="sleep" value="yes">
+                            <label for="sleep-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sleep-no" name="sleep" value="no" checked>
+                            <label for="sleep-no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="three-in-row">
+                <div class="form-group option-group">
+                    <label>PIR</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="pir-low" name="pir" value="low">
+                            <label for="pir-low">Low (<1.5)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="pir-middle" name="pir" value="middle">
+                            <label for="pir-middle">Middle (1.5-3.5)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="pir-high" name="pir" value="high" checked>
+                            <label for="pir-high">High (≥3.5)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Education Level</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="education-less" name="education" value="less-than-9th">
+                            <label for="education-less">Less than 9th</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="education-9-11" name="education" value="9-11th">
+                            <label for="education-9-11">9-11th grade</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="education-high" name="education" value="high-school">
+                            <label for="education-high">High school</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="education-college" name="education" value="some-college">
+                            <label for="education-college">Some college</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="education-graduate" name="education" value="college-graduate" checked>
+                            <label for="education-graduate">College graduate</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group option-group">
+                    <label>Sedentary Behavior</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="sedentary-low" name="sedentary" value="low" checked>
+                            <label for="sedentary-low">Low (<7h)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sedentary-middle" name="sedentary" value="middle">
+                            <label for="sedentary-middle">Middle (7-10h)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sedentary-high" name="sedentary" value="high">
+                            <label for="sedentary-high">High (>10h)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="form-group">
+                    <label for="hei">HEI-2020 score</label>
+                    <input type="number" id="hei" name="hei" step="0.01" placeholder="Enter score">
+                </div>
+
+                <div class="form-group">
+                    <label for="bmi">BMI (Kg/m²)</label>
+                    <input type="number" id="bmi" name="bmi" step="0.1" placeholder="Enter BMI">
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="form-group">
+                    <label for="albumin">Albumin (g/L)</label>
+                    <input type="number" id="albumin" name="albumin" step="0.01" placeholder="Enter level">
+                </div>
+
+                <div class="form-group">
+                    <label for="neutrophils">Neutrophils (1,000/µL)</label>
+                    <input type="number" id="neutrophils" name="neutrophils" step="0.01" placeholder="Enter count">
+                </div>
+            </div>
+
+            <button class="button" type="submit">calculate</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const riskLevel = urlParams.get('riskLevel');
+            const resultDiv = document.getElementById('result');
+            if (riskLevel) {
+                resultDiv.style.display = 'block';
+                if (riskLevel === 'high') {
+                    resultDiv.className = 'result high-risk';
+                    resultDiv.innerHTML = `
+                        <h3>High Depression Risk</h3>
+                        <p>Your assessment indicates a high risk.</p>
+                        <p>Please consult with a healthcare professional.</p>
+                    `;
+                } else {
+                    resultDiv.className = 'result low-risk';
+                    resultDiv.innerHTML = `
+                        <h3>Low Depression Risk</h3>
+                        <p>Your assessment indicates a low risk.</p>
+                        <p>Maintain healthy lifestyle habits.</p>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+    
