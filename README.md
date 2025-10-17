@@ -8,7 +8,14 @@ This project implements a depression risk screening tool specifically tailored f
 
 ## Project Structure
 
-├── code/│ ├── templates/│ │ └── index.html # Frontend interface for user input and result display│ ├── Data_Concat.py # Data concatenation and merging functions│ ├── Data_Preprocessing.py # Data preprocessing and feature engineering│ ├── Model_Build.py # Model training and evaluation pipeline│ └── app.py # Flask backend server handling calculations└── README.md
+├── code/│ 
+├── templates/│ 
+│ └── index.html # Frontend interface for user input and result display
+├── Data_Concat.py # Data concatenation and merging functions
+├── Data_Preprocessing.py # Data preprocessing and feature engineering
+├── Model_Build.py # Model training and evaluation pipeline
+├── app.py # Flask backend server handling calculations
+└── README.md
 
 
 ## File Descriptions
