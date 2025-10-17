@@ -8,7 +8,6 @@ This project implements a depression risk screening tool specifically tailored f
 
 ## Project Structure
 
-├── code/│ 
 ├── templates/│ 
 │ └── index.html # Frontend interface for user input and result display
 ├── Data_Concat.py # Data concatenation and merging functions
